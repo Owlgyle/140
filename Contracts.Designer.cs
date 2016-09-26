@@ -28,6 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
             this.labelfax = new System.Windows.Forms.Label();
             this.competingWholesaler = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -409,7 +418,6 @@
             // 
             // grid1
             // 
-            this.grid1.AllowUserToAddRows = false;
             this.grid1.AllowUserToDeleteRows = false;
             this.grid1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grid1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -430,7 +438,8 @@
             this.grid1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.grid1.Location = new System.Drawing.Point(12, 346);
             this.grid1.Name = "grid1";
-            this.grid1.Size = new System.Drawing.Size(921, 283);
+            this.grid1.ReadOnly = true;
+            this.grid1.Size = new System.Drawing.Size(1840, 283);
             this.grid1.TabIndex = 63;
             this.grid1.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.grid1_RowsAdded);
             this.grid1.Click += new System.EventHandler(this.grid1_Click);
@@ -448,7 +457,7 @@
             // 
             // locNotes
             // 
-            this.locNotes.Location = new System.Drawing.Point(15, 666);
+            this.locNotes.Location = new System.Drawing.Point(12, 695);
             this.locNotes.Multiline = true;
             this.locNotes.Name = "locNotes";
             this.locNotes.Size = new System.Drawing.Size(1009, 72);
@@ -558,7 +567,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(778, 56);
+            this.button1.Location = new System.Drawing.Point(778, 82);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(81, 23);
             this.button1.TabIndex = 72;
@@ -568,7 +577,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(778, 4);
+            this.button2.Location = new System.Drawing.Point(778, 30);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(86, 23);
             this.button2.TabIndex = 73;
@@ -578,7 +587,7 @@
             // 
             // DiscountTotal
             // 
-            this.DiscountTotal.Location = new System.Drawing.Point(654, 235);
+            this.DiscountTotal.Location = new System.Drawing.Point(97, 662);
             this.DiscountTotal.Name = "DiscountTotal";
             this.DiscountTotal.Size = new System.Drawing.Size(115, 13);
             this.DiscountTotal.TabIndex = 75;
@@ -586,7 +595,7 @@
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(571, 235);
+            this.label22.Location = new System.Drawing.Point(12, 662);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(79, 13);
             this.label22.TabIndex = 74;
@@ -594,15 +603,16 @@
             // 
             // DirectCostTotal
             // 
-            this.DirectCostTotal.Location = new System.Drawing.Point(654, 260);
+            this.DirectCostTotal.Location = new System.Drawing.Point(339, 662);
             this.DirectCostTotal.Name = "DirectCostTotal";
             this.DirectCostTotal.Size = new System.Drawing.Size(115, 13);
             this.DirectCostTotal.TabIndex = 77;
+            this.DirectCostTotal.Click += new System.EventHandler(this.DirectCostTotal_Click);
             // 
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(571, 260);
+            this.label24.Location = new System.Drawing.Point(244, 662);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(89, 13);
             this.label24.TabIndex = 76;
@@ -774,38 +784,66 @@
             // Column5
             // 
             this.Column5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle10.Format = "N2";
+            dataGridViewCellStyle10.NullValue = null;
+            this.Column5.DefaultCellStyle = dataGridViewCellStyle10;
             this.Column5.HeaderText = "Sell Price";
             this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
             // 
             // Margin
             // 
-            this.Margin.HeaderText = "Margin";
+            dataGridViewCellStyle11.Format = "N2";
+            dataGridViewCellStyle11.NullValue = null;
+            this.Margin.DefaultCellStyle = dataGridViewCellStyle11;
+            this.Margin.HeaderText = "Margin %";
             this.Margin.Name = "Margin";
+            this.Margin.ReadOnly = true;
             // 
             // Column6
             // 
+            dataGridViewCellStyle12.Format = "N2";
+            dataGridViewCellStyle12.NullValue = null;
+            this.Column6.DefaultCellStyle = dataGridViewCellStyle12;
             this.Column6.HeaderText = "Contract Price";
             this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
             // 
             // Column7
             // 
+            dataGridViewCellStyle13.Format = "N2";
+            dataGridViewCellStyle13.NullValue = null;
+            this.Column7.DefaultCellStyle = dataGridViewCellStyle13;
             this.Column7.HeaderText = "WH Price";
             this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
             // 
             // Column8
             // 
+            dataGridViewCellStyle14.Format = "N2";
+            dataGridViewCellStyle14.NullValue = null;
+            this.Column8.DefaultCellStyle = dataGridViewCellStyle14;
             this.Column8.HeaderText = "Rebate";
             this.Column8.Name = "Column8";
+            this.Column8.ReadOnly = true;
             // 
             // ActualDC
             // 
-            this.ActualDC.HeaderText = "Actual DC";
+            dataGridViewCellStyle15.Format = "N2";
+            dataGridViewCellStyle15.NullValue = null;
+            this.ActualDC.DefaultCellStyle = dataGridViewCellStyle15;
+            this.ActualDC.HeaderText = "Actuall DC";
             this.ActualDC.Name = "ActualDC";
+            this.ActualDC.ReadOnly = true;
             // 
             // DCExtTotal
             // 
+            dataGridViewCellStyle16.Format = "N2";
+            dataGridViewCellStyle16.NullValue = null;
+            this.DCExtTotal.DefaultCellStyle = dataGridViewCellStyle16;
             this.DCExtTotal.HeaderText = "DC Ext Total";
             this.DCExtTotal.Name = "DCExtTotal";
+            this.DCExtTotal.ReadOnly = true;
             // 
             // dcpercent
             // 
@@ -814,19 +852,27 @@
             // 
             // ContractExt
             // 
+            dataGridViewCellStyle17.Format = "N2";
+            dataGridViewCellStyle17.NullValue = null;
+            this.ContractExt.DefaultCellStyle = dataGridViewCellStyle17;
             this.ContractExt.HeaderText = "Contract Ext";
             this.ContractExt.Name = "ContractExt";
+            this.ContractExt.ReadOnly = true;
             // 
             // WhPriceExt
             // 
+            dataGridViewCellStyle18.Format = "N2";
+            dataGridViewCellStyle18.NullValue = null;
+            this.WhPriceExt.DefaultCellStyle = dataGridViewCellStyle18;
             this.WhPriceExt.HeaderText = "WH Ext";
             this.WhPriceExt.Name = "WhPriceExt";
+            this.WhPriceExt.ReadOnly = true;
             // 
             // Contracts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1151, 750);
+            this.ClientSize = new System.Drawing.Size(1960, 850);
             this.Controls.Add(this.dcExtGrandTotal);
             this.Controls.Add(this.whExtGrandTotal);
             this.Controls.Add(this.contractExtGrandTotal);

@@ -30,7 +30,7 @@ namespace WindowsFormsApplication1
         public static bool autoUpdateCustomerInfo;
         public static int contractNum = 0, curRow, unitID, ns, locationID, companyID, priceCode, pallets;
         public static float productCost, warehousePrice, multiplier_c = 1.0f, multiplier_wh = 1.0f, itemMultiplier = 1.0f;
-
+        
         SqlConnection conn = new SqlConnection("Data Source=Romeo;Initial Catalog=Royal;User ID=royal;password=wkjwuq");
         SqlConnection conn2 = new SqlConnection("Data Source=Romeo;Initial Catalog=Royal;User ID=royal;password=wkjwuq");
         SqlDataReader rdr = null;
@@ -297,7 +297,7 @@ namespace WindowsFormsApplication1
                 cPrice = Convert.ToSingle(contractPrice.Text);
 
                 if (sPrice != 0.0f)
-                    margin = cPrice / sPrice;
+                    margin = sPrice / cPrice;
                 else
                     margin = 0.0f;
                 rebate = warehousePrice - cPrice;
@@ -347,7 +347,7 @@ namespace WindowsFormsApplication1
                 grid1.Rows[a].Cells[13].Value = util_functions.roundNumber(Convert.ToSingle(whPrice.Text) * Convert.ToSingle(monthlyQty.Text), 2).ToString();
                 if (grid1.Rows.Count > 11)
                     grid1.FirstDisplayedScrollingRowIndex = grid1.Rows.Count - 12;
-
+                
                 Calculate_Contract_Totals();
 
                 resetEntryFields();
@@ -491,8 +491,8 @@ namespace WindowsFormsApplication1
                 return;
             }
 
-            //file1 = File.CreateText("c:\\contracts.csv");
-            file1 = File.CreateText("c:\\contracts.txt");
+            //file1 = File.CreateText("h:\\contracts.xls");
+            file1 = File.CreateText("h:\\contracts.xls");
             file1.WriteLine("ROYAL METAL PRODUCT'S PRICING CONTRACT" + Create_Tab_List(13));
             file1.WriteLine(Create_Tab_List(14));
             file1.WriteLine("Distributor's Sales Manager:\t \t" + salesMgr.Text + "\t \tContract Effective Date:\t" + contractEffDate.Text + Create_Tab_List(8));
@@ -936,12 +936,12 @@ namespace WindowsFormsApplication1
                 strData = strData + "&f_manufacturer=" + util_functions.urlEncoded(competingMfgr.Text);
                 strData = strData + "&f_contractLength=" + util_functions.urlEncoded(contractLen.Text);
 
-                strData = strData + "&f_shipping=" + util_functions.urlEncoded(materialShipping.Items[materialShipping.SelectedIndex].ToString());
-                strData = strData + "&f_secured=" + util_functions.urlEncoded(yesNoBusiness.Items[yesNoBusiness.SelectedIndex].ToString());
-                strData = strData + "&f_fullLine=" + util_functions.urlEncoded(yesNoBuy.Items[yesNoBuy.SelectedIndex].ToString());
+                strData = strData + "&f_shipping=" + util_functions.urlEncoded(materialShipping.Items[ materialShipping.SelectedIndex].ToString());
+                strData = strData + "&f_secured=" + util_functions.urlEncoded(yesNoBusiness.Items[ yesNoBusiness.SelectedIndex].ToString());
+                strData = strData + "&f_fullLine=" + util_functions.urlEncoded(yesNoBuy.Items[ yesNoBuy.SelectedIndex].ToString());
 
 
-                if (contractNum > 0)
+                if (contractNum > 0 )
                     results = util_functions.Post_Web_Form("/admin/vb_Contract_Update.cfm", strData);
                 else
                     results = util_functions.Post_Web_Form("/admin/vb_Contract_Submit.cfm", strData);
@@ -1001,8 +1001,6 @@ namespace WindowsFormsApplication1
             bool errorLoading;
             string errMsg;
 
-            SqlDataReader rdr2 = null;
-
             if (itemsList.Count > 0)
                 itemsList.RemoveRange(0, itemsList.Count);
 
@@ -1010,68 +1008,67 @@ namespace WindowsFormsApplication1
             errorLoading = false;
 
             SqlCommand cmd = new SqlCommand("select contracts.*,contracts.ct as contractID,location.customernum,location.priceID from contracts left outer join location on contracts.locationid = location.ct where contracts.ct = " + contractID, conn);
-
-            rdr2 = cmd.ExecuteReader();
-            if (rdr2.HasRows && rdr2.Read())
+            rdr = cmd.ExecuteReader();
+            if (rdr.HasRows && rdr.Read())
             {
                 resetForm();
                 autoUpdateCustomerInfo = false;
-                locNotes.Text = rdr2["notes"].ToString();
-                contractNum = Convert.ToInt16(rdr2["contractID"].ToString());
-                cNum.Text = rdr2["customerNum"].ToString();
-                locationID = Convert.ToInt16(rdr2["locationID"].ToString());
-                companyID = Convert.ToInt16(rdr2["companyID"].ToString());
+                locNotes.Text = rdr["notes"].ToString();
+                contractNum = Convert.ToInt16(rdr["contractID"].ToString());
+                cNum.Text = rdr["customerNum"].ToString();
+                locationID = Convert.ToInt16(rdr["locationID"].ToString());
+                companyID = Convert.ToInt16(rdr["companyID"].ToString());
 
-                orderTotal.Text = rdr2["contractTotal"].ToString();
-                DiscountTotal.Text = rdr2["totalDiscount"].ToString();
-                DirectCostTotal.Text = rdr2["totalDirectCost"].ToString();
+                orderTotal.Text = rdr["contractTotal"].ToString();
+                DiscountTotal.Text = rdr["totalDiscount"].ToString();
+                DirectCostTotal.Text = rdr["totalDirectCost"].ToString();
 
-                salesMgr.Text = rdr2["salesMgr"].ToString();
-                accountRep.Text = rdr2["accountRep"].ToString();
-                contractorsName.Text = rdr2["cName"].ToString();
-                contractorsLocation.Text = rdr2["cLocation"].ToString();
-                royalVolume.Text = rdr2["royalVolume"].ToString();
-                newContract.Text = rdr2["existingContract"].ToString();
+                salesMgr.Text = rdr["salesMgr"].ToString();
+                accountRep.Text = rdr["accountRep"].ToString();
+                contractorsName.Text = rdr["cName"].ToString();
+                contractorsLocation.Text = rdr["cLocation"].ToString();
+                royalVolume.Text = rdr["royalVolume"].ToString();
+                newContract.Text = rdr["existingContract"].ToString();
 
-                contractEffDate.Text = rdr2["effectiveDate"].ToString();
-                distribBranch.Text = rdr2["branch"].ToString();
-                contractorsAct.Text = rdr2["accountNum"].ToString();
-                competingWholesaler.Text = rdr2["wholesaler"].ToString();
-                competingMfgr.Text = rdr2["manufacturer"].ToString();
-                contractLen.Text = rdr2["contractLength"].ToString();
+                contractEffDate.Text = rdr["effectiveDate"].ToString();
+                distribBranch.Text = rdr["branch"].ToString();
+                contractorsAct.Text = rdr["accountNum"].ToString();
+                competingWholesaler.Text = rdr["wholesaler"].ToString();
+                competingMfgr.Text = rdr["manufacturer"].ToString();
+                contractLen.Text = rdr["contractLength"].ToString();
 
-                multiplier.Text = rdr2["multiplier_c"].ToString();
-                whMultiplier.Text = rdr2["multiplier_wh"].ToString();
+                multiplier.Text = rdr["multiplier_c"].ToString();
+                whMultiplier.Text = rdr["multiplier_wh"].ToString();
 
-                if (util_functions.isnumeric(multiplier.Text))
+                if ( util_functions.isnumeric(multiplier.Text) )
                     multiplier_c = Convert.ToSingle(multiplier.Text);
                 if (util_functions.isnumeric(whMultiplier.Text))
                     multiplier_wh = Convert.ToSingle(whMultiplier.Text);
-
+                
                 materialShipping.SelectedIndex = 0;
-                for (a = 0; a < materialShipping.Items.Count; ++a)
-                    if (string.Compare(materialShipping.Items[a].ToString(), rdr2["shipping"].ToString()) == 0)
+                for( a = 0; a < materialShipping.Items.Count; ++a)
+                    if (string.Compare(materialShipping.Items[a].ToString(), rdr["shipping"].ToString()) == 0)
                     {
                         materialShipping.SelectedIndex = a;
                         break;
                     }
                 yesNoBusiness.SelectedIndex = 0;
                 for (a = 0; a < yesNoBusiness.Items.Count; ++a)
-                    if (string.Compare(yesNoBusiness.Items[a].ToString(), rdr2["secured"].ToString()) == 0)
+                    if (string.Compare(yesNoBusiness.Items[a].ToString(), rdr["secured"].ToString()) == 0)
                     {
                         yesNoBusiness.SelectedIndex = a;
                         break;
                     }
                 yesNoBuy.SelectedIndex = 0;
                 for (a = 0; a < yesNoBuy.Items.Count; ++a)
-                    if (string.Compare(yesNoBuy.Items[a].ToString(), rdr2["fullLine"].ToString()) == 0)
+                    if (string.Compare(yesNoBuy.Items[a].ToString(), rdr["fullLine"].ToString()) == 0)
                     {
                         yesNoBuy.SelectedIndex = a;
                         break;
                     }
 
-                if (util_functions.isnumeric(rdr2["priceID"].ToString()))
-                    priceCode = Convert.ToInt16(rdr2["priceID"].ToString());
+                if (util_functions.isnumeric(rdr["priceID"].ToString()))
+                    priceCode = Convert.ToInt16(rdr["priceID"].ToString());
                 else
                     priceCode = 0;
 
@@ -1079,7 +1076,7 @@ namespace WindowsFormsApplication1
 
                 autoUpdateCustomerInfo = true;
 
-                rdr2.Close();
+                rdr.Close();
             }
             else
             {
@@ -1089,25 +1086,25 @@ namespace WindowsFormsApplication1
 
 
             cmd = new SqlCommand("select contractSkus.*,units.ct as unitsCt, units.cost as ucost from contractSkus left outer join units on contractSkus.unitid = units.ct where contractSkus.active=1 and contractSkus.contractid = " + contractID, conn);
-            rdr2 = cmd.ExecuteReader();
+            rdr = cmd.ExecuteReader();
 
-            if (rdr2.HasRows)
-                while (rdr2.Read())
+            if (rdr.HasRows)
+                while (rdr.Read())
                 {
                     try
                     {
                         productCost = 0.0f;
                         unitID = 0;
-                        if (util_functions.isnumeric(rdr2["unitsCt"].ToString()))
+                        if (util_functions.isnumeric(rdr["unitsCt"].ToString()))
                         {
-                            unitID = Convert.ToInt16(rdr2["unitsCt"].ToString());
-                            if (util_functions.isnumeric(rdr2["cost"].ToString()))
-                                productCost = Convert.ToSingle(rdr2["cost"].ToString());
-                            else if (util_functions.isnumeric(rdr2["ucost"].ToString()))
-                                productCost = Convert.ToSingle(rdr2["ucost"].ToString());
+                            unitID = Convert.ToInt16(rdr["unitsCt"].ToString());
+                            if (util_functions.isnumeric(rdr["cost"].ToString()))
+                                productCost = Convert.ToSingle(rdr["cost"].ToString());
+                            else if (util_functions.isnumeric(rdr["ucost"].ToString()))
+                                productCost = Convert.ToSingle(rdr["ucost"].ToString());
                         }
 
-                        warehousePrice = Convert.ToSingle(rdr2["warehousePrice"].ToString());
+                        warehousePrice = Convert.ToSingle(rdr["warehousePrice"].ToString());
 
                         a = grid1.Rows.Add();
                         currentItem.rowID = (ushort)a;
@@ -1115,24 +1112,24 @@ namespace WindowsFormsApplication1
                         currentItem.multiplierOverriden = false;
                         currentItem.productCost = productCost;
                         currentItem.warehousePrice = warehousePrice;
-                        currentItem.multiplierOverriden = Convert.ToBoolean(rdr2["multiplierOverridden"].ToString());
-                        currentItem.multiplier = Convert.ToSingle(rdr2["multiplier"].ToString());
+                        currentItem.multiplierOverriden = Convert.ToBoolean(rdr["multiplierOverridden"].ToString());
+                        currentItem.multiplier = Convert.ToSingle(rdr["multiplier"].ToString());
 
-                        monthlyTempQty = Convert.ToInt32(rdr2["qty"].ToString());
-                        contractTempPrice = Convert.ToSingle(rdr2["contractPrice"].ToString());
-                        whTempPrice = Convert.ToSingle(rdr2["warehousePrice"].ToString());
+                        monthlyTempQty = Convert.ToInt32(rdr["qty"].ToString());
+                        contractTempPrice = Convert.ToSingle(rdr["contractPrice"].ToString());
+                        whTempPrice = Convert.ToSingle(rdr["warehousePrice"].ToString());
 
                         itemsList.Add(currentItem);
 
-                        grid1.Rows[a].Cells[0].Value = rdr2["sku"].ToString();
-                        grid1.Rows[a].Cells[1].Value = rdr2["sku"].ToString();
-                        grid1.Rows[a].Cells[2].Value = rdr2["descrip"].ToString();
+                        grid1.Rows[a].Cells[0].Value = rdr["sku"].ToString();
+                        grid1.Rows[a].Cells[1].Value = rdr["sku"].ToString();
+                        grid1.Rows[a].Cells[2].Value = rdr["descrip"].ToString();
                         grid1.Rows[a].Cells[3].Value = monthlyTempQty.ToString();
-                        grid1.Rows[a].Cells[4].Value = rdr2["sellPrice"].ToString();
-                        grid1.Rows[a].Cells[5].Value = rdr2["margin"].ToString();
-                        grid1.Rows[a].Cells[6].Value = rdr2["contractPrice"].ToString();
+                        grid1.Rows[a].Cells[4].Value = rdr["sellPrice"].ToString();
+                        grid1.Rows[a].Cells[5].Value = rdr["margin"].ToString();
+                        grid1.Rows[a].Cells[6].Value = rdr["contractPrice"].ToString();
                         grid1.Rows[a].Cells[7].Value = warehousePrice.ToString();
-                        grid1.Rows[a].Cells[8].Value = rdr2["rebate"].ToString();
+                        grid1.Rows[a].Cells[8].Value = rdr["rebate"].ToString();
                         grid1.Rows[a].Cells[9].Value = productCost.ToString();
                         grid1.Rows[a].Cells[10].Value = util_functions.roundNumber(productCost * monthlyTempQty, 2).ToString();
                         grid1.Rows[a].Cells[11].Value = util_functions.roundNumber(productCost / contractTempPrice, 2).ToString();
@@ -1156,7 +1153,7 @@ namespace WindowsFormsApplication1
             if (grid1.Rows.Count > 11)
                 grid1.FirstDisplayedScrollingRowIndex = grid1.Rows.Count - 12;
 
-            rdr2.Close();
+            rdr.Close();
 
             Calculate_Contract_Totals();
 
@@ -1193,8 +1190,8 @@ namespace WindowsFormsApplication1
                 if (grid1.Rows[a].Cells[13].Value != null && util_functions.isnumeric(grid1.Rows[a].Cells[13].Value.ToString()))
                     WH_Ext_Total = WH_Ext_Total + Convert.ToSingle(grid1.Rows[a].Cells[13].Value.ToString());
 
-                totalDirectCost = totalDirectCost + (pCost * qty) / (cPrice * qty);
-                totalAmount = totalAmount + qty * sPrice;
+                totalDirectCost = (DC_Ext_Total) / (Contract_Ext_Total);
+           
             }
 
             DirectCostTotal.Text = totalDirectCost.ToString();
@@ -1217,8 +1214,13 @@ namespace WindowsFormsApplication1
             contract_ID = contractID;
         }
 
-        public void Update_Contract_Form()
+        private void DirectCostTotal_Click(object sender, EventArgs e)
         {
+
+        }
+
+        public void Update_Contract_Form()
+        { 
             contractNum = 0;
 
             if (string.Compare(contract_ID, "") != 0)
@@ -1274,7 +1276,7 @@ namespace WindowsFormsApplication1
                     if (curRow > -1 && itemMultiplier != multiplier_c)
                         cMultiplierOverriden = true;
                     f1 = Convert.ToSingle(sellPrice.Text) * itemMultiplier;
-                    f1 = (float)Math.Round(f1, 2);
+                    f1 = (float)Math.Round(f1,2);
                     contractPrice.Text = String.Format("{0:0.00}", f1);
                 }
                 else
@@ -1293,7 +1295,7 @@ namespace WindowsFormsApplication1
                 f1 = (float)Math.Round(f1, 2);
                 contractPrice.Text = String.Format("{0:0.00}", f1);
             }
-            else if (showError)
+            else if ( showError )
                 MessageBox.Show("Either the sell price must be non zero with a valid contract multiplier or the warehouse price must be non zero with a valid warehouse multiplier.");
 
         }
@@ -1321,7 +1323,7 @@ namespace WindowsFormsApplication1
 
         public void Update_Skus_For_New_Multiplier()
         {
-            int x, y;
+            int x,y;
             string tempSellPrice;
 
             for (x = 0; x < grid1.Rows.Count; x++)
@@ -1344,7 +1346,7 @@ namespace WindowsFormsApplication1
 
         public bool Validate_Multipliers()
         {
-            if (!util_functions.isnumeric(multiplier.Text))
+            if ( !util_functions.isnumeric(multiplier.Text))
             {
                 MessageBox.Show("Please enter a valid multiplier.");
                 multiplier.Focus();
@@ -1399,6 +1401,5 @@ namespace WindowsFormsApplication1
         {
             Set_Grid_Column_Sizes();
         }
-
     }
 }
